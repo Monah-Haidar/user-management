@@ -4,3 +4,7 @@
 @theme {
     --color-primary: #3251D0;
 }
+
+.section-padding {
+    @apply p-8
+}
