@@ -74,7 +74,7 @@ function App() {
     return (
         <>
             <Navbar/>
-            {/*<div className={`flex flex-col`}>*/}
+            
             <div className={`section-padding`}><TextInput/></div>
 
             <div
@@ -84,11 +84,6 @@ function App() {
                               dateOfBirth={user.dateOfBirth}/>
                 ))}
             </div>
-
-
-            {/*</div>*/}
-
-
         </>
     )
 }
