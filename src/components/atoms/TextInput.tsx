@@ -1,7 +1,7 @@
 interface Props {
-    type?: 'text',
-    placeholder?: string,
-    className?: string
+    type?: 'text';
+    placeholder?: string;
+    className?: string;
 }
 
 const TextInput = (
