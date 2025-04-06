@@ -23,7 +23,7 @@ const UserCard = ({className = '', name, email, status, dateOfBirth}: Props) => 
 
 
     return (
-        <div className={`flex flex-col w-full bg-red-50 p-4 bg-white shadow-lg rounded-md gap-4` + className}>
+        <div className={`flex flex-col w-full p-4 bg-white shadow-lg rounded-md gap-4` + className}>
             <div>
                 <div className={`flex items-center justify-center`}>
                     <span
