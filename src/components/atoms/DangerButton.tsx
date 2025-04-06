@@ -14,7 +14,7 @@ const DangerButton = (
     return (
         <button
             className={
-                `inline-flex items-center rounded-sm border border-transparent bg-red-600 px-4 py-2 text-sm font-semibold text-white cursor-pointer transition duration-150 ease-in-out hover:bg-red-400 hover:text-white ` + className
+                `inline-flex items-center rounded-sm border border-transparent bg-red-600 px-3 py-1 text-xs font-semibold text-white cursor-pointer transition duration-150 ease-in-out hover:bg-red-400 hover:text-white ` + className
             }
         >
             {children}

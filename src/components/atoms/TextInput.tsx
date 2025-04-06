@@ -1,7 +1,9 @@
+import React from 'react';
+
 interface Props {
     type?: 'text',
     placeholder?: string,
-    className?: string
+    className?: React.ReactNode
 }
 
 const TextInput = (
