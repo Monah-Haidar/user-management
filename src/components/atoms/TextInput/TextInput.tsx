@@ -1,15 +1,11 @@
-interface Props {
-    type?: 'text';
-    placeholder?: string;
-    className?: string;
-}
+import {TextInputProps } from "./TextInput.type.ts";
 
 const TextInput = (
     {
         type = 'text',
         placeholder = 'Search users...',
         className = ''
-    }: Props) => {
+    }: TextInputProps) => {
     return (
         <input
             type={type}

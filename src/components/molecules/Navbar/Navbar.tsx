@@ -3,8 +3,7 @@ import {IoMenu} from "react-icons/io5";
 
 
 const Navbar = () => {
-
-
+    
     return (
         <nav className={`py-4 px-6 h-16 flex items-center justify-between bg-primary`}>
             <h1 className={`text-white text-xl`}>User Management</h1>

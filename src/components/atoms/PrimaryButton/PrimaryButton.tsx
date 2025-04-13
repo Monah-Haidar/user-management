@@ -1,15 +1,10 @@
-import React from "react";
-
-interface Props {
-    className?: string;
-    children?: React.ReactNode;
-}
+import { PrimaryButtonProps } from './PrimaryButton.type.ts';
 
 const PrimaryButton = (
     {
         className = '',
         children,
-    }: Props) => {
+    }: PrimaryButtonProps) => {
     return (
         <>
             <button

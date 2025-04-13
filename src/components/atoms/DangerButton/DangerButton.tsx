@@ -1,15 +1,11 @@
-import React from "react";
+import {DangerButtonProps} from "./DangerButton.type.ts";
 
-interface Props {
-    className?: string;
-    children?: React.ReactNode;
-}
 
 const DangerButton = (
     {
         className = '',
         children,
-    }: Props
+    }: DangerButtonProps
 ) => {
     return (
         <button

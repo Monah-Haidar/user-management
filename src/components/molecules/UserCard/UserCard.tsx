@@ -1,20 +1,9 @@
-import PrimaryButton from "./atoms/PrimaryButton.tsx";
-import DangerButton from "./atoms/DangerButton.tsx";
+import {PrimaryButton} from "../../atoms/PrimaryButton";
+import {DangerButton} from "../../atoms/DangerButton";
+import { UserCardProps } from "./UserCard.type.ts";
 
-export enum Status {
-    Active = 'active',
-    Locked = 'locked',
-}
 
-interface Props {
-    className?: string;
-    name: string;
-    email: string;
-    status: Status;
-    dateOfBirth: Date;
-}
-
-const UserCard = ({className = '', name, email, status, dateOfBirth}: Props) => {
+const UserCard = ({className = '', name, email, status, dateOfBirth}: UserCardProps) => {
 
     const getInitials = (name: string) => {
         const [first = '', last = ''] = name.trim().split(' ');

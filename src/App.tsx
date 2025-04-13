@@ -1,8 +1,7 @@
 import './App.css'
-import Navbar from "./components/Navbar.tsx";
-import TextInput from "./components/atoms/TextInput.tsx";
-import {Status} from "./components/UserCard.tsx"
-import UserCard from "./components/UserCard.tsx";
+import {Navbar} from "./components/molecules/Navbar";
+import {TextInput} from "./components/atoms/TextInput";
+import {UserCard, Status} from "./components/molecules/UserCard";
 
 
 function App() {
