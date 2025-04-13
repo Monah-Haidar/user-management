@@ -1,10 +1,8 @@
-import './App.css'
-import {Navbar} from "./components/molecules/Navbar";
-import {TextInput} from "./components/atoms/TextInput";
-import {UserCard, Status} from "./components/molecules/UserCard";
+import {TextInput} from "../../atoms/TextInput";
+import {UserCard, Status} from "../../molecules/UserCard";
 
 
-function App() {
+function Dashboard() {
 
     const users = [
         {
@@ -72,8 +70,6 @@ function App() {
 
     return (
         <>
-            <Navbar/>
-            
             <div className={`section-padding`}><TextInput/></div>
 
             <div
@@ -87,4 +83,4 @@ function App() {
     )
 }
 
-export default App
+export default Dashboard;
