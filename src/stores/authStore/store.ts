@@ -4,8 +4,7 @@ import {persist} from "zustand/middleware";
 interface AuthStore {
     expiresIn: number | null,
     accessToken: string | null,
-    isLoggedIn: boolean,
-    login: (data: { accessToken: string; expiresIn: number}) => void,
+        login: (data: { accessToken: string; expiresIn: number}) => void,
     logout: () => void,
 }
 
@@ -15,18 +14,15 @@ const useAuthStore = create(
         (set) => ({
             expiresIn: null,
             accessToken: null,
-            isLoggedIn: false,
 
             login: ({ accessToken, expiresIn}) => set(() => ({
                 expiresIn,
                 accessToken,
-                isLoggedIn: true,
             })),
 
             logout: () => set(() => ({
                 expiresIn: null,
                 accessToken: null,
-                isLoggedIn: false,
             })),
 
         }),
