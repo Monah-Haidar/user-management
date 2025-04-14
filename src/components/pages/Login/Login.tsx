@@ -5,8 +5,8 @@ import React, {useState} from "react";
 import {TextInput} from "../../atoms/TextInput";
 import axios, {CanceledError} from "axios";
 import useAuthStore from "../../../stores/authStore/store.ts";
-import {Navigate, useNavigate} from "react-router-dom";
-import {routeNames} from "../../../constants/routeNames.ts";
+import {useNavigate} from "react-router-dom";
+
 
 interface LoginCredentials {
     email: string;

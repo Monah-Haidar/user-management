@@ -3,6 +3,7 @@ import {Dashboard} from "../components/pages/Dashboard";
 import { Login } from "../components/pages/Login"
 import { routeNames } from "../constants/routeNames.ts";
 import Layout from "./Layout.tsx";
+import PrivateRoutes from "./PrivateRoutes.tsx";
 
 const router = createBrowserRouter([
     {
@@ -10,13 +11,18 @@ const router = createBrowserRouter([
         element: <Layout />,
         children: [
             {
-                path: routeNames.dashboard,
-                element: <Dashboard />
-            },
-            {
                 path: routeNames.login,
                 element: <Login />
             }
+        ]
+    },
+    {
+        element: <PrivateRoutes />,
+        children: [
+            {
+                path: routeNames.dashboard,
+                element: <Dashboard />
+            },
         ]
     }
 ]);
