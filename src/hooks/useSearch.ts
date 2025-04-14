@@ -17,10 +17,14 @@ const useSearch = (keyword: string) => {
 
 
     useEffect(() => {
-        if (!accessToken || !keyword.trim()) return;
+        if (!accessToken || !keyword.trim()) {
+            setSearchedUsers([]);
+            return
+        };
 
         const controller = new AbortController();
 
+        setIsLoading(true);
         axios
             .get<FetchResponse>('/api/users', {
                 signal: controller.signal,
@@ -34,7 +38,6 @@ const useSearch = (keyword: string) => {
             .then(res => {
                 setSearchedUsers(res.data.result.data.users);
                 setIsLoading(false);
-                // console.log(res.data.result.data.users);
             })
             .catch((err) => {
                 if (err instanceof CanceledError) return;

@@ -3,7 +3,7 @@ import {UserCard} from "../../molecules/UserCard";
 import {useUsers} from "../../../hooks/useUsers";
 import {Navbar} from "../../molecules/Navbar";
 import useSearch from "../../../hooks/useSearch.ts";
-import {useState} from "react";
+import {useMemo, useState} from "react";
 
 
 function Dashboard() {
@@ -11,16 +11,18 @@ function Dashboard() {
     const [keyword, setKeyword] = useState("");
 
     const {users, isLoading} = useUsers();
-    const {searchedUsers} = useSearch(keyword);
+    const {searchedUsers, isLoading: searchIsLoading} = useSearch(keyword);
+
 
 
     const hasKeyword = keyword.trim().length > 0;
 
     const displayUsers = hasKeyword ? searchedUsers : users;
 
+
     return (
         <>
-            <Navbar />
+
 
             <div className={`section-padding`}>
                 <TextInput
@@ -31,6 +33,8 @@ function Dashboard() {
 
             </div>
 
+            {(searchIsLoading || isLoading) && <p className={`col-span-full text-center text-gray-500 text-xl`}>Loading...</p>}
+
             <div
                 className="section-padding mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {displayUsers.map((user, index) => (
@@ -38,6 +42,7 @@ function Dashboard() {
                               dateOfBirth={user.dateOfBirth}/>
                 ))}
             </div>
+
         </>
     )
 }

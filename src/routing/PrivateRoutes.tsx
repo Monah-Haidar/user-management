@@ -1,6 +1,7 @@
 
 import useAuthStore from "../stores/authStore/store.ts";
 import {Navigate, Outlet} from "react-router-dom";
+import {Navbar} from "../components/molecules/Navbar";
 
 
 const PrivateRoutes = () => {
@@ -10,7 +11,14 @@ const PrivateRoutes = () => {
          return <Navigate to={'/login'} replace />;
     }
 
-    return <Outlet />
+    return (
+        <>
+            <Navbar />
+            <div id="main">
+                <Outlet />
+            </div>
+        </>
+    );
 };
 
 export default PrivateRoutes;
