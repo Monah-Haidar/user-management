@@ -1,56 +1,51 @@
 import axios, {CanceledError} from "axios";
 import {useEffect, useState} from "react";
-import {Status} from "../components/molecules/UserCard";
 import useAuthStore from "../stores/authStore/store.ts";
+import {User} from "./useUsers/useUsers.type.ts";
 
-interface User {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    status: Status;
-    dateOfBirth: Date;
-}
 
 interface FetchResponse {
     users: User[];
 }
 
-const useUsers = () => {
+const useSearch = (keyword: string) => {
+    const [isLoading, setIsLoading] = useState(false);
+    const [searchedUsers, setSearchedUsers] = useState<User[]>([]);
 
     const accessToken = useAuthStore(state => state.accessToken);
 
-    const [users, setUsers] = useState<User[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
+
 
     useEffect(() => {
-
-        if (!accessToken) return;
+        if (!accessToken || !keyword.trim()) return;
 
         const controller = new AbortController();
 
-        setIsLoading(true);
         axios
             .get<FetchResponse>('/api/users', {
+                signal: controller.signal,
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 },
+                params: {
+                    search: `${keyword}`
+                }
             })
-            .then((res) => {
+            .then(res => {
+                setSearchedUsers(res.data.result.data.users);
                 setIsLoading(false);
-                setUsers(res.data.result.data.users);
+                // console.log(res.data.result.data.users);
             })
             .catch((err) => {
                 if (err instanceof CanceledError) return;
                 setIsLoading(false);
-            });
+            })
 
         return () => controller.abort();
-    }, [accessToken]);
+    }, [accessToken, keyword]);
 
 
+    return { isLoading, searchedUsers}
+}
 
-    return {users, isLoading};
-};
-
-export default useUsers;
+export default useSearch;
