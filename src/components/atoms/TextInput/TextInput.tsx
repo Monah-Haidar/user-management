@@ -3,11 +3,13 @@ import {TextInputProps } from "./TextInput.type.ts";
 const TextInput = (
     {
         type = 'text',
-        placeholder = 'Search users...',
-        className = ''
+        placeholder = '',
+        className = '',
+        ...rest
     }: TextInputProps) => {
     return (
         <input
+            {...rest}
             type={type}
             placeholder={placeholder}
             className={
