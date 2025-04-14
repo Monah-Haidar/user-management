@@ -1,1 +1,1 @@
-export { default as router } from './Routes';
+export { default as AppRouter } from './AppRouter.tsx';

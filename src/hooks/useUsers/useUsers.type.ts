@@ -9,3 +9,7 @@ export interface User {
     status: Status;
     dateOfBirth: Date;
 }
+
+export interface FetchResponse {
+    users: User[];
+}

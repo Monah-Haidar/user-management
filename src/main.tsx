@@ -1,11 +1,20 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { RouterProvider } from "react-router";
-import {router} from "./routing";
 import './App.css';
+import {ThemeProvider, useThemeStore} from "./stores/themeStore";
+import AppRouter from "./routing/AppRouter.tsx";
+
+
+
+const theme = useThemeStore.getState().theme
+document.documentElement.classList.remove('light', 'dark')
+document.documentElement.classList.add(theme)
+
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-      <RouterProvider router={router} />
+      <ThemeProvider>
+        <AppRouter />
+      </ThemeProvider>
   </StrictMode>,
 )

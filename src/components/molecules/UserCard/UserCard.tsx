@@ -1,6 +1,7 @@
 import {PrimaryButton} from "../../atoms/PrimaryButton";
 import {DangerButton} from "../../atoms/DangerButton";
 import { UserCardProps } from "./UserCard.type.ts";
+import React from "react";
 
 
 const UserCard = ({className = '', firstName, lastName, email, status, dateOfBirth}: UserCardProps) => {
@@ -11,7 +12,7 @@ const UserCard = ({className = '', firstName, lastName, email, status, dateOfBir
 
 
     return (
-        <div className={`flex flex-col w-full p-4 bg-white shadow-lg rounded-md gap-4` + className}>
+        <div className={`flex flex-col w-full p-4 bg-white shadow-lg rounded-md gap-4 dark:bg-background` + className}>
             <div>
                 <div className={`flex items-center justify-center`}>
                     <span
@@ -21,10 +22,10 @@ const UserCard = ({className = '', firstName, lastName, email, status, dateOfBir
                 </div>
 
                 <div className={`flex flex-col gap-1`}>
-                    <p className={`text-xl font-semibold text-gray-800`}>{firstName} {lastName}</p>
-                    <p className={`text-xs font-semibold text-gray-500`}>Email: {email}</p>
-                    <p className={`text-xs font-semibold text-gray-500`}>Status: {status}</p>
-                    <p className={`text-xs font-semibold text-gray-500`}>Date of
+                    <p className={`text-xl font-semibold text-gray-800 text-light-text dark:text-dark-text`}>{firstName} {lastName}</p>
+                    <p className={`text-xs font-semibold text-gray-500 `}>Email: {email}</p>
+                    <p className={`text-xs font-semibold text-gray-500 `}>Status: {status}</p>
+                    <p className={`text-xs font-semibold text-gray-500 `}>Date of
                         Birth: {dateOfBirth}</p>
                 </div>
 
@@ -39,4 +40,4 @@ const UserCard = ({className = '', firstName, lastName, email, status, dateOfBir
     );
 };
 
-export default UserCard;
+export default React.memo(UserCard);

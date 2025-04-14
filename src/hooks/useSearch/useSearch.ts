@@ -1,12 +1,9 @@
 import axios, {CanceledError} from "axios";
 import {useEffect, useState} from "react";
-import useAuthStore from "../stores/authStore/store.ts";
-import {User} from "./useUsers/useUsers.type.ts";
+import useAuthStore from "../../stores/authStore/store";
+import {FetchResponse, User} from "./../useUsers/useUsers.type.ts";
 
 
-interface FetchResponse {
-    users: User[];
-}
 
 const useSearch = (keyword: string) => {
     const [isLoading, setIsLoading] = useState(false);

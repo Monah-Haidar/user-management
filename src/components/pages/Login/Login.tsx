@@ -1,17 +1,15 @@
 import {FiEye} from "react-icons/fi";
 import {IoEyeOffOutline} from "react-icons/io5";
 
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import {TextInput} from "../../atoms/TextInput";
 import axios, {CanceledError} from "axios";
-import useAuthStore from "../../../stores/authStore/store.ts";
+import useAuthStore from "../../../stores/authStore/store";
 import {useNavigate} from "react-router-dom";
+import {LoginCredentials} from "./Login.type.ts";
 
 
-interface LoginCredentials {
-    email: string;
-    password: string;
-}
+
 
 
 const Login = () => {
@@ -25,6 +23,15 @@ const Login = () => {
     const navigate = useNavigate();
 
     const login = useAuthStore(state => state.login);
+
+
+    const handleEmailChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        setForm(prev => ({ ...prev, email: event.target.value }));
+    }, []);
+
+    const handlePasswordChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        setForm(prev => ({ ...prev, password: event.target.value }));
+    }, []);
 
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -67,35 +74,29 @@ const Login = () => {
     return (
         <section className={`flex justify-center items-center h-screen`}>
 
-            <div className={`p-6 flex flex-col gap-4 bg-white shadow-2xl w-fit rounded-lg`}>
-                <h1 className={`text-xl font-bold text-gray-800 text-center`}>Login</h1>
-                {errors && (<p className={`p-2 bg-red-200 text-red-800 rounded-sm`}>{errors}</p>)}
+            <div className={`p-6 flex flex-col gap-4 bg-white shadow-2xl w-fit rounded-lg dark:bg-gray-800`}>
+                <h1 className={`text-xl font-bold text-gray-800 text-center dark:text-white`}>Login</h1>
+                {errors && (<p className={`p-2 bg-red-200 text-red-800 rounded-sm dark:bg-red-800 dark:text-red-100`}>{errors}</p>)}
                 <form onSubmit={handleSubmit} className={`flex flex-col gap-4 w-3xs`}>
                     <div className={`flex flex-col w-full`}>
-                        <label htmlFor="email" className={`text-base text-gray-800`}>Email</label>
+                        <label htmlFor="email" className={`text-base text-gray-800 dark:text-gray-100`}>Email</label>
                         <TextInput
                             id="email"
                             type="email"
                             name="email"
                             value={form.email}
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => setForm({
-                                ...form,
-                                email: event.target.value
-                            })}
+                            onChange={handleEmailChange}
                         />
                     </div>
 
                     <div className={'relative flex flex-col w-full'}>
-                        <label htmlFor="password" className={`text-base text-gray-800`}>Password</label>
+                        <label htmlFor="password" className={`text-base text-gray-800 dark:text-gray-100`}>Password</label>
                         <TextInput
                             id="password"
                             type={showPassword ? 'text' : 'password'}
                             name="password"
                             value={form.password}
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => setForm({
-                                ...form,
-                                password: event.target.value
-                            })}
+                            onChange={handlePasswordChange}
                         />
 
                         {showPassword ? (

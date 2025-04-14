@@ -1,9 +1,8 @@
 import {TextInput} from "../../atoms/TextInput";
 import {UserCard} from "../../molecules/UserCard";
 import {useUsers} from "../../../hooks/useUsers";
-import {Navbar} from "../../molecules/Navbar";
-import useSearch from "../../../hooks/useSearch.ts";
-import {useMemo, useState} from "react";
+import {useSearch} from "../../../hooks/useSearch";
+import React, {useCallback, useMemo, useState} from "react";
 
 
 function Dashboard() {
@@ -15,10 +14,19 @@ function Dashboard() {
 
 
 
-    const hasKeyword = keyword.trim().length > 0;
+    // const hasKeyword = keyword.trim().length > 0;
 
-    const displayUsers = hasKeyword ? searchedUsers : users;
+    // const displayUsers = hasKeyword ? searchedUsers : users;
 
+    const displayUsers = useMemo(() => {
+        return keyword.trim().length > 0 ? searchedUsers : users;
+    }, [keyword, searchedUsers, users]);
+
+
+
+    const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        setKeyword(e.target.value);
+    }, []);
 
     return (
         <>
@@ -28,7 +36,7 @@ function Dashboard() {
                 <TextInput
                     placeholder='Search users...'
                     value={keyword}
-                    onChange={(e) => setKeyword(e.target.value)}
+                    onChange={handleSearchChange}
                 />
 
             </div>
@@ -37,8 +45,8 @@ function Dashboard() {
 
             <div
                 className="section-padding mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {displayUsers.map((user, index) => (
-                    <UserCard key={index} firstName={user.firstName} lastName={user.lastName} email={user.email} status={user.status}
+                {displayUsers.map((user) => (
+                    <UserCard key={user.id} firstName={user.firstName} lastName={user.lastName} email={user.email} status={user.status}
                               dateOfBirth={user.dateOfBirth}/>
                 ))}
             </div>

@@ -1,5 +1,5 @@
 
-import useAuthStore from "../stores/authStore/store.ts";
+import useAuthStore from "../stores/authStore/store";
 import {Navigate, Outlet} from "react-router-dom";
 import {Navbar} from "../components/molecules/Navbar";
 
