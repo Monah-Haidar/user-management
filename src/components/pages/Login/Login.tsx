@@ -4,6 +4,9 @@ import {IoEyeOffOutline} from "react-icons/io5";
 import React, {useState} from "react";
 import {TextInput} from "../../atoms/TextInput";
 import axios, {CanceledError} from "axios";
+import useAuthStore from "../../../stores/authStore/store.ts";
+import {Navigate, useNavigate} from "react-router-dom";
+import {routeNames} from "../../../constants/routeNames.ts";
 
 interface LoginCredentials {
     email: string;
@@ -19,13 +22,18 @@ const Login = () => {
         email: '',
         password: '',
     })
+    const navigate = useNavigate();
 
+    const login = useAuthStore(state => state.login);
 
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (!form.email || !form.password) setErrors('Fill required fields');
+        if (!form.email || !form.password) {
+            setErrors('Fill required fields');
+            return;
+        }
 
         setIsLoading(true);
 
@@ -33,12 +41,26 @@ const Login = () => {
             .post<LoginCredentials>('/api/login', { body: form })
             .then(res => {
                 setIsLoading(false);
-                console.log(res.data)
+
+                const { status, result } = res.data;
+
+                if (status === 200 && result.message === 'success') {
+                    const { accessToken, expiresIn } = res.data.result.data;
+
+                    login({accessToken, expiresIn});
+
+                    navigate('/dashboard');
+                } else {
+                    setErrors(result.message || 'Login failed.');
+                }
             })
             .catch(err => {
-                if (err instanceof CanceledError) return;
                 setIsLoading(false);
-                console.log(err)
+                if (err instanceof CanceledError) return;
+
+                const errorMessage = err.response?.data?.message || 'Something went wrong.';
+
+                setErrors(errorMessage);
             })
     }
 
