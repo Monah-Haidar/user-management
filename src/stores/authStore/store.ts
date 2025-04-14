@@ -20,10 +20,18 @@ const useAuthStore = create(
                 accessToken,
             })),
 
-            logout: () => set(() => ({
-                expiresIn: null,
-                accessToken: null,
-            })),
+            logout: () => {
+                set(
+                    () =>
+                        ({
+                            expiresIn: null,
+                            accessToken: null,
+                        })
+                );
+                const storageKey = 'auth-storage';
+                localStorage.removeItem(storageKey);
+            }
+
 
         }),
         {

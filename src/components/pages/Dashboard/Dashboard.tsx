@@ -1,6 +1,7 @@
 import {TextInput} from "../../atoms/TextInput";
 import {UserCard} from "../../molecules/UserCard";
 import useUsers from "../../../hooks/useUsers.ts";
+import {Navbar} from "../../molecules/Navbar";
 
 
 function Dashboard() {
@@ -13,6 +14,8 @@ function Dashboard() {
 
     return (
         <>
+            <Navbar />
+
             <div className={`section-padding`}><TextInput placeholder='Search users...' /></div>
 
             <div
