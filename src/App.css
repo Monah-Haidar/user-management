@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @theme {
     --color-primary: #3251D0;
@@ -10,24 +11,49 @@
 }
 
 
-:root {
-    color-scheme: light dark;
-}
+/*:root {*/
+/*    color-scheme: light dark;*/
+/*}*/
 
-[data-theme="light"] {
-    --background: #ffffff;
-    --text: #1a202c;
-    --primary: #3b82f6;
-}
+/*[data-theme="light"] {*/
+/*    --background: #ffffff;*/
+/*    --text: #1a202c;*/
+/*    --primary: #3251D0;*/
+/*}*/
 
-[data-theme="dark"] {
-    --background: #1a202c;
-    --text: #f7fafc;
-    --primary: #60a5fa;
-}
+/*[data-theme="dark"] {*/
+/*    --background: #1a202c;*/
+/*    --text: #f7fafc;*/
+/*    --primary: #60a5fa;*/
+/*}*/
 
-body {
-    background-color: var(--background);
-    color: var(--text);
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
+/*body {*/
+/*    background-color: var(--background);*/
+/*    color: var(--text);*/
+/*    transition: background-color 0.3s ease, color 0.3s ease;*/
+/*}*/
+
+/*.bg-theme {*/
+/*    background-color: var(--background);*/
+/*}*/
+
+/*.text-theme {*/
+/*    color: var(--text);*/
+/*}*/
+
+/*.bg-primary-theme {*/
+/*    background-color: var(--primary);*/
+/*}*/
+
+/*.border-primary-theme {*/
+/*    border-color: var(--primary);*/
+/*}*/
+
+/*.text-primary-theme {*/
+/*    color: var(--primary);*/
+/*}*/
+
+/*!* Optional transitions *!*/
+/*.theme-transition {*/
+/*    @apply transition-colors duration-300 ease-in-out;*/
+/*}*/

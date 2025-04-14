@@ -13,14 +13,14 @@ const Navbar = () => {
 
 
     return (
-        <nav className={`py-4 px-6 h-16 flex items-center justify-between bg-primary`}>
-            <h1 className={`text-white text-xl`}>User Management</h1>
+        <nav className={`py-4 px-6 h-16 flex items-center justify-between bg-primary dark:bg-gray-800`}>
+            <h1 className={`text-white text-xl dark:text-white`}>User Management</h1>
             <div className="hidden sm:flex items-center justify-between gap-4">
                 {accessToken && (
                     <>
                         <button
                             className={
-                                `inline-flex items-center rounded-sm border border-transparent bg-white px-4 py-2 text-sm font-semibold text-primary cursor-pointer transition duration-150 ease-in-out hover:bg-neutral-400`}
+                                `inline-flex items-center rounded-sm border border-transparent bg-white px-4 py-2 text-sm font-semibold text-primary cursor-pointer transition duration-150 ease-in-out hover:bg-neutral-400 dark:hover:bg-neutral-600 `}
                         >
                             Create User
                         </button>

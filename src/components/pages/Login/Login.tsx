@@ -72,14 +72,14 @@ const Login = () => {
     }
 
     return (
-        <section className={`flex justify-center items-center h-screen`}>
+        <section className={`flex justify-center items-center h-screen dark:bg-gray-900`}>
 
             <div className={`p-6 flex flex-col gap-4 bg-white shadow-2xl w-fit rounded-lg dark:bg-gray-800`}>
-                <h1 className={`text-xl font-bold text-gray-800 text-center dark:text-white`}>Login</h1>
-                {errors && (<p className={`p-2 bg-red-200 text-red-800 rounded-sm dark:bg-red-800 dark:text-red-100`}>{errors}</p>)}
-                <form onSubmit={handleSubmit} className={`flex flex-col gap-4 w-3xs`}>
+                <h1 className={`text-xl font-bold text-gray-800 text-center dark:text-gray-100`}>Login</h1>
+                {errors && (<p className={`p-2 bg-red-200 dark:bg-red-600 text-red-800 rounded-sm dark:text-red-100`}>{errors}</p>)}
+                <form onSubmit={handleSubmit} className={`flex flex-col gap-4 w-3xs `}>
                     <div className={`flex flex-col w-full`}>
-                        <label htmlFor="email" className={`text-base text-gray-800 dark:text-gray-100`}>Email</label>
+                        <label htmlFor="email" className={`text-base text-gray-800 dark:text-gray-200`}>Email</label>
                         <TextInput
                             id="email"
                             type="email"
@@ -90,7 +90,7 @@ const Login = () => {
                     </div>
 
                     <div className={'relative flex flex-col w-full'}>
-                        <label htmlFor="password" className={`text-base text-gray-800 dark:text-gray-100`}>Password</label>
+                        <label htmlFor="password" className={`text-base text-gray-800 dark:text-gray-200`}>Password</label>
                         <TextInput
                             id="password"
                             type={showPassword ? 'text' : 'password'}
@@ -103,7 +103,7 @@ const Login = () => {
                                 <IoEyeOffOutline
                                     size={18}
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className={'absolute top-1/2 right-3 text-gray-500 cursor-pointer'}
+                                    className={'absolute top-1/2 right-3 text-gray-500 dark:text-gray-300 cursor-pointer'}
 
                                 />
                             ) :
@@ -111,7 +111,7 @@ const Login = () => {
                                 <FiEye
                                     size={18}
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className={'absolute top-1/2 right-3 text-gray-500 cursor-pointer'} />
+                                    className={'absolute top-1/2 right-3 text-gray-500 dark:text-gray-300 cursor-pointer'} />
                             )
                         }
                     </div>
