@@ -14,11 +14,6 @@ const useSearch = (keyword: string) => {
 
 
     useEffect(() => {
-        if (!accessToken || !keyword.trim()) {
-            setSearchedUsers([]);
-            return
-        };
-
         const controller = new AbortController();
 
         setIsLoading(true);
