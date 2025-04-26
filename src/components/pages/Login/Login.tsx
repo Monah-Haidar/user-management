@@ -45,7 +45,11 @@ const Login = () => {
         setIsLoading(true);
 
         axios
-            .post<LoginCredentials>('/api/login', { body: form })
+            .post<LoginCredentials>('/api/login', { ...form }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
             .then(res => {
                 setIsLoading(false);
 
@@ -64,8 +68,8 @@ const Login = () => {
             .catch(err => {
                 setIsLoading(false);
                 if (err instanceof CanceledError) return;
-
-                const errorMessage = err.response?.data?.message || 'Something went wrong.';
+           
+                const errorMessage = err.response?.data?.result.data.message || 'Something went wrong.';
 
                 setErrors(errorMessage);
             })

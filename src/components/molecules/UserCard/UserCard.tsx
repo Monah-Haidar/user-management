@@ -10,6 +10,7 @@ const UserCard = ({className = '', firstName, lastName, email, status, dateOfBir
         return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
     };
 
+ 
 
     return (
         <div className={`flex flex-col w-full p-4 bg-white shadow-lg rounded-md gap-4 dark:bg-gray-800 dark:text-gray-100 ` + className}>
@@ -26,11 +27,9 @@ const UserCard = ({className = '', firstName, lastName, email, status, dateOfBir
                     <p className={`text-xs font-semibold text-gray-500 dark:text-gray-400 `}>Email: {email}</p>
                     <p className={`text-xs font-semibold text-gray-500 dark:text-gray-400 `}>Status: {status}</p>
                     <p className={`text-xs font-semibold text-gray-500 dark:text-gray-400 `}>Date of
-                        Birth: {dateOfBirth}</p>
+                        Birth: {dateOfBirth.toLocaleString()}</p>
                 </div>
-
             </div>
-
 
             <div className={`flex items-center gap-x-2 justify-end`}>
                 <PrimaryButton className={``}>Edit</PrimaryButton>
