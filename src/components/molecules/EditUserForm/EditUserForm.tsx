@@ -3,14 +3,35 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Status } from "../UserCard";
 import { TextInput } from "../../atoms/TextInput";
 import { schema, FormData } from "../CreateUserForm/CreateUserForm";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 const EditUserForm = () => {
+
+    const location = useLocation();
+    const navigate = useNavigate();
+    const userData = location.state?.user || null;
+
+    console.log(userData);
+
+    // if(!userData) {
+    //     <Navigate to={"/dashboard"} />;
+    //     return null;
+    // }
+
+
     const {
         register,
         handleSubmit,
         formState: { errors, isSubmitting },
     } = useForm<FormData>({
         resolver: zodResolver(schema),
+        defaultValues: {
+            firstName: userData?.firstName,
+            lastName: userData?.lastName || "",
+            email: userData?.email,
+            dateOfBirth: userData?.dateOfBirth,
+            status: userData?.status,
+        },
     });
 
     const onSubmit = (data: FieldValues) => {
@@ -121,7 +142,7 @@ const EditUserForm = () => {
                         type="submit"
                         className={`inline-flex items-center rounded-sm border border-transparent bg-primary px-4 py-2 text-sm font-semibold text-white cursor-pointer transition duration-150 ease-in-out hover:bg-blue-400`}
                     >
-                        {isSubmitting ? "Submitting..." : "Create User"}
+                        {isSubmitting ? "Submitting..." : "Edit User"}
                     </button>
                 </div>
             </form>

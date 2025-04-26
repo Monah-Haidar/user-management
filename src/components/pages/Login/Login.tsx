@@ -76,7 +76,7 @@ const Login = () => {
     }
 
     return (
-        <section className={`flex justify-center items-center h-screen dark:bg-gray-900`}>
+        <section className={`flex justify-center items-center h-screen bg-gray-100 dark:bg-gray-900`}>
 
             <div className={`p-6 flex flex-col gap-4 bg-white shadow-2xl w-fit rounded-lg dark:bg-gray-800`}>
                 <h1 className={`text-xl font-bold text-gray-800 text-center dark:text-gray-100`}>Login</h1>
