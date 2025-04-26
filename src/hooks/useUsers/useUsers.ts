@@ -10,13 +10,14 @@ const useUsers = () => {
     
     return useQuery({
         queryKey: ['users'],
-        queryFn: () => 
+        queryFn: ({signal}) => 
             axios
             .get<FetchResponse>('/api/users', {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                     'Content-Type': 'application/json',
                 },
+                signal,
             })
             .then(res => res.data),            
         staleTime: 1000 * 60 * 60 * 24, // 24 hours

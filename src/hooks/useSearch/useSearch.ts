@@ -1,46 +1,47 @@
-import axios, {CanceledError} from "axios";
-import {useEffect, useState} from "react";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import useAuthStore from "../../stores/authStore/store";
-import {FetchResponse, User} from "./../useUsers/useUsers.type.ts";
+import { FetchResponse } from "./../useUsers/useUsers.type.ts";
+import { useState, useEffect } from 'react';
 
-
-
-const useSearch = (keyword: string) => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [searchedUsers, setSearchedUsers] = useState<User[]>([]);
-
-    const accessToken = useAuthStore(state => state.accessToken);
-
-
+const useDebounce = (value: string, delay: number = 500) => {
+    const [debouncedValue, setDebouncedValue] = useState(value);
 
     useEffect(() => {
-        const controller = new AbortController();
+        const timer = setTimeout(() => {
+            setDebouncedValue(value);
+        }, delay);
 
-        setIsLoading(true);
-        axios
-            .get<FetchResponse>('/api/users', {
-                signal: controller.signal,
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-                params: {
-                    search: `${keyword}`
-                }
-            })
-            .then(res => {
-                setSearchedUsers(res.data.result.data.users);
-                setIsLoading(false);
-            })
-            .catch((err) => {
-                if (err instanceof CanceledError) return;
-                setIsLoading(false);
-            })
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [value, delay]);
 
-        return () => controller.abort();
-    }, [accessToken, keyword]);
+    return debouncedValue;
+};
 
+const useSearch = (keyword: string) => {
+    const accessToken = useAuthStore((state) => state.accessToken);
+    const debouncedKeyword = useDebounce(keyword);
 
-    return { isLoading, searchedUsers}
-}
+    return useQuery({
+        queryKey: ["search", debouncedKeyword],
+        queryFn: ({ signal }) =>
+            axios
+                .get<FetchResponse>("/api/users", {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        "Content-Type": "application/json",
+                    },
+                    params: {
+                        search: debouncedKeyword,
+                    },
+                    signal,
+                })
+                .then((res) => res.data),
+        staleTime: 1000 * 60 * 60 * 24, // 24 hours
+        enabled: !!accessToken && debouncedKeyword.trim().length > 0,
+    });
+};
 
 export default useSearch;
