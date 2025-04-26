@@ -1,4 +1,4 @@
-import {createBrowserRouter, RouterProvider} from "react-router";
+import {createBrowserRouter, RouterProvider, Navigate} from "react-router";
 import {Dashboard} from "../components/pages/Dashboard";
 import { Login } from "../components/pages/Login"
 import { routeNames } from "../constants/routeNames.ts";
@@ -13,11 +13,15 @@ const AppRouter = () => {
             createBrowserRouter([
                 {
                     path: routeNames.root,
+                    element: <Navigate to={routeNames.dashboard} replace />,
+                },
+                {
+                    path: routeNames.login,
                     element: <Layout/>,
                     errorElement: <ErrorPage/>,
                     children: [
                         {
-                            path: routeNames.login,
+                            index: true,
                             element: <Login/>
                         }
                     ]
