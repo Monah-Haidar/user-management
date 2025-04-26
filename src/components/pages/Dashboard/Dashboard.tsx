@@ -8,15 +8,15 @@ import React, {useCallback, useMemo, useState} from "react";
 function Dashboard() {
 
     const [keyword, setKeyword] = useState("");
+    
+    const {data: userData, isLoading} = useUsers();
+    const users = userData?.result.data.users || [];
+    console.log(users);
 
-    const {users, isLoading} = useUsers();
+
     const {searchedUsers, isLoading: searchIsLoading} = useSearch(keyword);
 
 
-
-    // const hasKeyword = keyword.trim().length > 0;
-
-    // const displayUsers = hasKeyword ? searchedUsers : users;
 
     const displayUsers = useMemo(() => {
         return keyword.trim().length > 0 ? searchedUsers : users;

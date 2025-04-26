@@ -1,47 +1,28 @@
-import axios, {CanceledError} from "axios";
-import {useEffect, useState} from "react";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import useAuthStore from "../../stores/authStore/store";
-import {FetchResponse, User} from './useUsers.type.ts'
-
-
+import { FetchResponse } from './useUsers.type.ts';
 
 
 const useUsers = () => {
 
     const accessToken = useAuthStore(state => state.accessToken);
-
-    const [users, setUsers] = useState<User[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
-
-    useEffect(() => {
-
-        if (!accessToken) return;
-
-        const controller = new AbortController();
-
-        setIsLoading(true);
-        axios
+    
+    return useQuery({
+        queryKey: ['users'],
+        queryFn: () => 
+            axios
             .get<FetchResponse>('/api/users', {
-                signal: controller.signal,
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
                 },
             })
-            .then((res) => {
-                setIsLoading(false);
-                setUsers(res.data.result.data.users);
-            })
-            .catch((err) => {
-                if (err instanceof CanceledError) return;
-                setIsLoading(false);
-            });
-
-        return () => controller.abort();
-    }, [accessToken]);
-
-
-
-    return {users, isLoading};
+            .then(res => res.data),            
+        staleTime: 1000 * 60 * 60 * 24, // 24 hours
+        enabled: !!accessToken,
+    })
+    
 };
 
 export default useUsers;

@@ -1,4 +1,4 @@
-import {Status} from "../../components/molecules/UserCard";
+import { Status } from "../../components/molecules/UserCard";
 
 export interface User {
     id: number;
@@ -14,7 +14,7 @@ export interface FetchResponse {
     result: {
         data: {
             users: User[];
-        };
+        }
         message: string;
     };
 }
