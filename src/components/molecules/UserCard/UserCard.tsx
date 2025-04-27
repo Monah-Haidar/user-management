@@ -3,6 +3,7 @@ import { DangerButton } from "../../atoms/DangerButton";
 import { UserCardProps } from "./UserCard.type.ts";
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { useDeleteUsers } from "../../../hooks/useDeleteUsers";
 
 const UserCard = ({
     className = "",
@@ -13,6 +14,8 @@ const UserCard = ({
     status,
     dateOfBirth,
 }: UserCardProps) => {
+    const deleteUser = useDeleteUsers();
+
     const getInitials = (firstName: string = "", lastName: string = "") => {
         return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
     };
@@ -24,6 +27,14 @@ const UserCard = ({
         email,
         status,
         dateOfBirth,
+    };
+
+    const handleDelete = async () => {
+        try {
+            await deleteUser.mutate(id);
+        } catch (error) {
+            console.error('Error deleting user:', error);
+        }
     };
 
     return (
@@ -67,15 +78,13 @@ const UserCard = ({
             </div>
 
             <div className={`flex items-center gap-x-2 justify-end`}>
-                <NavLink 
+                <NavLink
                     to={`/dashboard/edit/${id}`}
                     state={{ user: userData }}
                 >
                     <PrimaryButton>Edit</PrimaryButton>
                 </NavLink>
-                <NavLink to={``}>
-                    <DangerButton>Delete</DangerButton>
-                </NavLink>
+                <DangerButton onClick={handleDelete}>Delete</DangerButton>
             </div>
         </div>
     );

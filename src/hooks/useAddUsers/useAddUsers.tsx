@@ -55,6 +55,8 @@ const useAddUsers = () => {
             return { previousUsers: previousData?.result.data || { users: [] } };
         },
 
+
+
         onError: (_error, _newUser, context) => {
             if (context?.previousUsers) {
                 queryClient.setQueryData<QueryData>(["users"], {
@@ -65,9 +67,9 @@ const useAddUsers = () => {
             }
         },
 
-        // onSettled: () => {
-        //     queryClient.invalidateQueries({ queryKey: ["users"] });
-        // },
+        onSettled: () => {
+            queryClient.invalidateQueries({ queryKey: ["users"] });
+        },
     });
 };
 
