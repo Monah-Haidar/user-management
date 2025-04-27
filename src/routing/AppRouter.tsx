@@ -1,13 +1,13 @@
-import {createBrowserRouter, RouterProvider, Navigate} from "react-router";
-import {Dashboard} from "../components/pages/Dashboard";
-import { Login } from "../components/pages/Login"
+import { useMemo } from "react";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router";
+import CreateUserPage from "../components/pages/CreateUserPage/CreateUserPage.tsx";
+import { Dashboard } from "../components/pages/Dashboard";
+import EditUserPage from "../components/pages/EditUserPage/EditUserPage.tsx";
+import { ErrorPage } from "../components/pages/ErrorPage";
 import { routeNames } from "../constants/routeNames.ts";
 import Layout from "./Layout.tsx";
 import PrivateRoutes from "./PrivateRoutes.tsx";
-import {ErrorPage} from "../components/pages/ErrorPage";
-import {useMemo} from "react";
-import CreateUserPage from "../components/pages/CreateUserPage/CreateUserPage.tsx";
-import EditUserPage from "../components/pages/EditUserPage/EditUserPage.tsx";
+import PublicRoute from "./PublicRoute.tsx";
 
 const AppRouter = () => {
     const router = useMemo(
@@ -24,7 +24,7 @@ const AppRouter = () => {
                     children: [
                         {
                             index: true,
-                            element: <Login/>
+                            element: <PublicRoute/>
                         }
                     ]
                 },
