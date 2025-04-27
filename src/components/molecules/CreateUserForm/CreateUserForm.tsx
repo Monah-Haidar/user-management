@@ -57,12 +57,10 @@ const CreateUserForm = () => {
     const addUser = useAddUsers();
 
     const onSubmit = async (data: FormData) => {
-        try {
-            await addUser.mutateAsync(data);
-            navigate('/dashboard');
-        } catch (error) {
-            console.error('Error creating user:', error);
-        }
+        
+        await addUser.mutateAsync(data);
+        navigate('/dashboard');
+        
     };
 
     return (

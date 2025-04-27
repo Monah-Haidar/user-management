@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "../../stores/authStore";
 import { User } from "../useUsers/useUsers.type";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 interface EditUserContext { 
     previousUsers: { users: User[] }
@@ -53,12 +54,15 @@ const useEditUsers = () => {
                         users: old?.result.data.users.map(user => 
                             user.id === newUser.id ? optimisticUser : user
                         ) || []
-                    }
+                    },
+                    message: ''
                 }
             }));
 
             return { previousUsers: previousData?.result.data || { users: [] } };
         },
+
+        
 
         onError: (_error, _newUser, context) => {
             if (context?.previousUsers) {
@@ -70,6 +74,11 @@ const useEditUsers = () => {
                     },
                 });
             }
+            toast.error("Failed to edit user. Please try again.");
+        },
+
+        onSuccess: (data) => {
+            toast.success(data.result.message || "User deleted successfully");
         },
 
         onSettled: () => {

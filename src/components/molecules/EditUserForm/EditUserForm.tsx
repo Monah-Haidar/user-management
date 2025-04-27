@@ -33,24 +33,22 @@ const EditUserForm = () => {
     const editUser = useEditUsers();
 
     const onSubmit = async (data: FormData) => {
-        try {
-            const payload = {
-                firstName: data.firstName,
-                lastName: data.lastName || "",
-                email: data.email,
-                status: data.status,
-                dateOfBirth: data.dateOfBirth,
-            };
-            
-            await editUser.mutateAsync({
-                id: userData.id.toString(),
-                data: payload,
-            });
+     
+        const payload = {
+            firstName: data.firstName,
+            lastName: data.lastName || "",
+            email: data.email,
+            status: data.status,
+            dateOfBirth: data.dateOfBirth,
+        };
+        
+        await editUser.mutateAsync({
+            id: userData.id.toString(),
+            data: payload,
+        });
 
-            navigate('/dashboard');
-        } catch (error) {
-            console.error('Error updating user:', error);
-        }
+        navigate('/dashboard');
+       
     };
 
     return (

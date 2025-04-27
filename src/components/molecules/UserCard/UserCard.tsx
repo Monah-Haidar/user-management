@@ -31,12 +31,8 @@ const UserCard = ({
     };
 
     const handleDelete = async () => {
-        try {
-            await deleteUser.mutate(id);
-            setShowDeleteModal(false);
-        } catch (error) {
-            console.error('Error deleting user:', error);
-        }
+        await deleteUser.mutate(id);
+        setShowDeleteModal(false);
     };
 
     return (

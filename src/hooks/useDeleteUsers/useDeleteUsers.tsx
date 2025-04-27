@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "../../stores/authStore";
 import axios from "axios";
 import { User } from "../useUsers/useUsers.type";
+import { toast } from "react-toastify";
 
 interface QueryData {
     result: {
@@ -68,6 +69,11 @@ const useDeleteUsers = () => {
                     },
                 },
             }));
+            toast.error("Failed to delete user. Please try again.");
+        },
+
+        onSuccess: (data) => {
+            toast.success(data.result.message || "User deleted successfully");
         },
 
         onSettled: () => {
