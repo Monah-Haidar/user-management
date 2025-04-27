@@ -28,11 +28,12 @@ export const schema = z.object({
         })
         .email({ message: "Invalid email address" }),
 
-    dateOfBirth: z.coerce.date({
-        required_error: "Date of birth is required",
-        invalid_type_error: "Date of birth must be a valid date",
-    }),
-    
+    dateOfBirth: z
+        .string({
+            required_error: "Date of birth is required",
+            invalid_type_error: "Date of birth must be a valid date",
+        })
+        .regex(/^\d{4}-\d{2}-\d{2}$/, { message: "Date must be in YYYY-MM-DD format" }),
 
     status: z.enum([Status.Active, Status.Locked], {
         required_error: "Status is required",
@@ -57,16 +58,7 @@ const CreateUserForm = () => {
 
     const onSubmit = async (data: FormData) => {
         try {
-
-            
-            const payload: any = {
-                ...data,
-                dateOfBirth: data.dateOfBirth.toISOString().slice(0, 10),
-            };
-            await addUser.mutateAsync(payload);
-
-
-
+            await addUser.mutateAsync(data);
             navigate('/dashboard');
         } catch (error) {
             console.error('Error creating user:', error);

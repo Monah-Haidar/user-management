@@ -29,8 +29,8 @@ const useDeleteUsers = () => {
     const queryClient = useQueryClient();
     const accessToken = useAuthStore((state) => state.accessToken);
 
-    return useMutation<DeleteResponse, Error, number, DeleteContext>({
-        mutationFn: (id: number) =>
+    return useMutation<DeleteResponse, Error, string, DeleteContext>({
+        mutationFn: (id: string) =>
             axios.delete<DeleteResponse>(`/api/users/${id}`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
@@ -68,6 +68,10 @@ const useDeleteUsers = () => {
                     },
                 },
             }));
+        },
+
+        onSettled: () => {
+            queryClient.invalidateQueries({ queryKey: ["users"] });
         },
     });
 };

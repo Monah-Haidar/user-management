@@ -1,41 +1,56 @@
-import { FieldValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Status } from "../UserCard";
+import { useForm } from "react-hook-form";
+import { Navigate, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useEditUsers } from "../../../hooks/useEditUsers";
 import { TextInput } from "../../atoms/TextInput";
-import { schema, FormData } from "../CreateUserForm/CreateUserForm";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { FormData, schema } from "../CreateUserForm/CreateUserForm";
+import { Status } from "../UserCard";
 
 const EditUserForm = () => {
-
     const location = useLocation();
     const navigate = useNavigate();
-    const userData = location.state?.user || null;
+    const userData = location.state?.user;
 
-    console.log(userData);
-
-    // if(!userData) {
-    //     <Navigate to={"/dashboard"} />;
-    //     return null;
-    // }
-
+    if (!userData) {
+        return <Navigate to="/dashboard" replace />;
+    }
 
     const {
         register,
         handleSubmit,
-        formState: { errors, isSubmitting },
+        formState: { errors, isSubmitting, isDirty },
     } = useForm<FormData>({
         resolver: zodResolver(schema),
         defaultValues: {
-            firstName: userData?.firstName,
-            lastName: userData?.lastName || "",
-            email: userData?.email,
-            dateOfBirth: userData?.dateOfBirth,
-            status: userData?.status,
+            firstName: userData.firstName,
+            lastName: userData.lastName || "",
+            email: userData.email,
+            dateOfBirth: userData.dateOfBirth,
+            status: userData.status,
         },
     });
 
-    const onSubmit = (data: FieldValues) => {
-        console.log(data);
+    const editUser = useEditUsers();
+
+    const onSubmit = async (data: FormData) => {
+        try {
+            const payload = {
+                firstName: data.firstName,
+                lastName: data.lastName || "",
+                email: data.email,
+                status: data.status,
+                dateOfBirth: data.dateOfBirth,
+            };
+            
+            await editUser.mutateAsync({
+                id: userData.id.toString(),
+                data: payload,
+            });
+
+            navigate('/dashboard');
+        } catch (error) {
+            console.error('Error updating user:', error);
+        }
     };
 
     return (
@@ -137,12 +152,22 @@ const EditUserForm = () => {
                     )}
                 </div>
 
-                <div className={`flex justify-center items-center mt-4`}>
+                <div className={`flex justify-center items-center mt-4 gap-4`}>
+                    <NavLink to={`/dashboard`}>
+                        <button
+                            className={`inline-flex items-center rounded-sm border border-transparent bg-red-600 px-4 py-2 text-sm font-semibold text-white cursor-pointer transition duration-150 ease-in-out hover:bg-red-400 hover:text-white`}
+                        >
+                            Cancel
+                        </button>
+                    </NavLink>
                     <button
                         type="submit"
-                        className={`inline-flex items-center rounded-sm border border-transparent bg-primary px-4 py-2 text-sm font-semibold text-white cursor-pointer transition duration-150 ease-in-out hover:bg-blue-400`}
+                        disabled={isSubmitting || !isDirty}
+                        className={`inline-flex items-center rounded-sm border border-transparent bg-primary px-4 py-2 text-sm font-semibold text-white cursor-pointer transition duration-150 ease-in-out hover:bg-blue-400 ${
+                            (isSubmitting || !isDirty) ? 'opacity-50 cursor-not-allowed' : ''
+                        }`}
                     >
-                        {isSubmitting ? "Submitting..." : "Edit User"}
+                        {isSubmitting ? "Updating..." : "Update User"}
                     </button>
                 </div>
             </form>

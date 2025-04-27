@@ -1,10 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { useAuthStore } from "../../stores/authStore";
 import { User } from "../useUsers/useUsers.type";
-import { FormData } from "../../components/molecules/CreateUserForm/CreateUserForm";
+import axios from "axios";
 
-interface AddUsersContext { 
+interface EditUserContext { 
     previousUsers: { users: User[] }
 }
 
@@ -16,19 +15,23 @@ interface QueryData {
     }
 }
 
-const useAddUsers = () => {
-    const accessToken = useAuthStore((state) => state.accessToken);
-    const queryClient = useQueryClient();
+interface EditUserPayload {
+    id: string;
+    data: Omit<User, 'id'>;
+}
 
-    return useMutation<User, Error, FormData, AddUsersContext>({
-        mutationFn: (data) =>
-            axios.post('/api/users', data, {
+const useEditUsers = () => {
+    const queryClient = useQueryClient();
+    const accessToken = useAuthStore((state) => state.accessToken);
+
+    return useMutation<any, Error, EditUserPayload, EditUserContext>({
+        mutationFn: ({ id, data }) =>
+            axios.put<EditUserPayload>(`/api/users/${id}`, data, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
-            })
-            .then((res) => res.data),
+            }).then((res) => res.data),
 
         onMutate: async (newUser) => {
             await queryClient.cancelQueries({ queryKey: ["users"] });
@@ -36,18 +39,20 @@ const useAddUsers = () => {
             const previousData = queryClient.getQueryData<QueryData>(["users"]);
 
             const optimisticUser: User = {
-                id: -1, // Temporary ID that will be replaced by the server response
-                firstName: newUser.firstName,
-                lastName: newUser.lastName || "",
-                email: newUser.email,
-                status: newUser.status,
-                dateOfBirth: newUser.dateOfBirth,
+                id: newUser.id,
+                firstName: newUser.data.firstName,
+                lastName: newUser.data.lastName || "",
+                email: newUser.data.email,
+                status: newUser.data.status,
+                dateOfBirth: newUser.data.dateOfBirth,
             };
 
             queryClient.setQueryData<QueryData>(["users"], old => ({
                 result: {
                     data: {
-                        users: [...(old?.result.data.users || []), optimisticUser]
+                        users: old?.result.data.users.map(user => 
+                            user.id === newUser.id ? optimisticUser : user
+                        ) || []
                     }
                 }
             }));
@@ -55,14 +60,14 @@ const useAddUsers = () => {
             return { previousUsers: previousData?.result.data || { users: [] } };
         },
 
-
-
         onError: (_error, _newUser, context) => {
             if (context?.previousUsers) {
                 queryClient.setQueryData<QueryData>(["users"], {
                     result: {
-                        data: context.previousUsers
-                    }
+                        data: {
+                            users: context.previousUsers.users || [],
+                        },
+                    },
                 });
             }
         },
@@ -71,6 +76,6 @@ const useAddUsers = () => {
             queryClient.invalidateQueries({ queryKey: ["users"] });
         },
     });
-};
+}
 
-export default useAddUsers;
+export default useEditUsers;

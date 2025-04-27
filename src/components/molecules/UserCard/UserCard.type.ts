@@ -4,11 +4,11 @@ export enum Status {
 }
 
 export interface UserCardProps {
-    id: number;
+    id: string;
     className?: string;
     firstName: string;
     lastName: string;
     email: string;
     status: Status;
-    dateOfBirth: Date;
+    dateOfBirth: string;
 }
