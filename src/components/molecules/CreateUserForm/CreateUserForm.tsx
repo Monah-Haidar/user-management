@@ -1,8 +1,10 @@
-import { FieldValues, useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Status } from "../UserCard";
+import { useForm } from "react-hook-form";
+import { NavLink, useNavigate } from "react-router-dom";
+import { z } from "zod";
 import { TextInput } from "../../atoms/TextInput";
+import { Status } from "../UserCard";
+import { useAddUsers } from "../../../hooks/useAddUsers";
 
 export const schema = z.object({
     firstName: z
@@ -17,8 +19,6 @@ export const schema = z.object({
         .string({
             invalid_type_error: "Last name must be a string",
         })
-        // .min(3, { message: "Last name must be at least 3 characters long" })
-        // .max(20, { message: "Last name must be at most 20 characters long" })
         .optional(),
 
     email: z
@@ -28,26 +28,11 @@ export const schema = z.object({
         })
         .email({ message: "Invalid email address" }),
 
-    // dateOfBirth: z.date({
-    //     // required_error: "Date is required",
-    //     // invalid_type_error: "Please select a date",
-    // }),
-
-    // dateOfBirth: z.preprocess((val) => {
-    //     if (typeof val === "string" || val instanceof Date) {
-    //         const date = new Date(val);
-    //         return isNaN(date.getTime()) ? undefined : date;
-    //     }
-    //     return val;
-    // }, z.date({
-    //     required_error: "Date of Birth is required",
-    //     invalid_type_error: "Invalid date format",
-    // })),
-
     dateOfBirth: z.coerce.date({
         required_error: "Date of birth is required",
         invalid_type_error: "Date of birth must be a valid date",
     }),
+    
 
     status: z.enum([Status.Active, Status.Locked], {
         required_error: "Status is required",
@@ -58,6 +43,8 @@ export const schema = z.object({
 export type FormData = z.infer<typeof schema>;
 
 const CreateUserForm = () => {
+    const navigate = useNavigate();
+    
     const {
         register,
         handleSubmit,
@@ -66,18 +53,28 @@ const CreateUserForm = () => {
         resolver: zodResolver(schema),
     });
 
-    const onSubmit = (data: FieldValues) => {
-        // Convert string date to Date object when submitting
-        // const formattedData = {
-        //     ...data,
-        //     dateOfBirth: new Date(data.dateOfBirth)
-        // };
-        console.log(data);
+    const addUser = useAddUsers();
+
+    const onSubmit = async (data: FormData) => {
+        try {
+
+            
+            const payload: any = {
+                ...data,
+                dateOfBirth: data.dateOfBirth.toISOString().slice(0, 10),
+            };
+            await addUser.mutateAsync(payload);
+
+
+
+            navigate('/dashboard');
+        } catch (error) {
+            console.error('Error creating user:', error);
+        }
     };
 
     return (
         <>
-
             <form
                 className={`flex flex-col gap-4 w-full rounded-lg `}
                 onSubmit={handleSubmit(onSubmit)}
@@ -175,12 +172,19 @@ const CreateUserForm = () => {
                     )}
                 </div>
 
-                <div className={`flex justify-center items-center mt-4`}>
+                <div className={`flex justify-center items-center mt-4 gap-4`}>
+                    <NavLink to={`/dashboard`}>
+                        <button
+                            className={`inline-flex items-center rounded-sm border border-transparent bg-red-600 px-4 py-2 text-sm font-semibold text-white cursor-pointer transition duration-150 ease-in-out hover:bg-red-400 hover:text-white`}
+                        >
+                            Cancel
+                        </button>
+                    </NavLink>
                     <button
                         type="submit"
                         className={`inline-flex items-center rounded-sm border border-transparent bg-primary px-4 py-2 text-sm font-semibold text-white cursor-pointer transition duration-150 ease-in-out hover:bg-blue-400`}
                     >
-                        {isSubmitting ? 'Submitting...' : 'Create User'}
+                        {isSubmitting ? "Submitting..." : "Create User"}
                     </button>
                 </div>
             </form>

@@ -38,7 +38,7 @@ const Navbar = () => {
                         </button>
                     </>
                 )}
-                {/*<span className={`px-4 py-2 cursor-pointer`}><IoMoonOutline className={`text-white`}/></span>*/}
+                
                 <span
                     className="px-4 py-2 cursor-pointer"
                     onClick={toggleTheme}

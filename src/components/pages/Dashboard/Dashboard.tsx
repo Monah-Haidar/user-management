@@ -9,10 +9,10 @@ function Dashboard() {
     const [keyword, setKeyword] = useState("");
 
     const { data: userData, isLoading: loadingUsers } = useUsers();
-    const users = userData?.result.data.users || [];
+    const users = useMemo(() => userData?.result?.data?.users ?? [], [userData]);
 
     const { data: searchedUserData, isLoading: searchIsLoading } = useSearch(keyword);
-    const searchedUsers = searchedUserData?.result.data.users || [];
+    const searchedUsers = useMemo(() => searchedUserData?.result?.data?.users ?? [], [searchedUserData]);
 
     const handleSearchChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
